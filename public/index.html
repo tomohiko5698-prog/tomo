@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUCTION TRACKER</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Serif+JP:wght@300;400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0804;color:#e8d5a3;font-family:'Noto Serif JP',serif;min-height:100vh;}
+.header{background:#070503;border-bottom:1px solid #1e1508;padding:18px 20px;}
+.header h1{font-family:'Playfair Display',serif;font-size:22px;color:#D4A843;letter-spacing:.1em;}
+.header p{font-size:10px;color:#3a2d1e;letter-spacing:.25em;margin-top:3px;}
+.main{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
+.card{background:#100d08;border:1px solid #251d10;border-radius:12px;padding:18px;margin-bottom:14px;}
+.card.gold{border-color:#D4A84333;}
+.sec{font-size:10px;letter-spacing:.3em;color:#D4A843;text-transform:uppercase;margin-bottom:10px;font-weight:700;}
+.dropzone{border:2px dashed #251d10;border-radius:10px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone:hover{border-color:#D4A843;background:#1a1408;}
+.dropzone img{width:100%;max-height:260px;object-fit:contain;border-radius:8px;}
+.cond-row{display:flex;gap:6px;}
+.cond-btn{flex:1;padding:10px 2px;border:none;border-radius:8px;cursor:pointer;background:#1a1408;color:#6b5e4e;font-size:14px;font-family:'Playfair Display',serif;transition:all .15s;}
+.cond-btn.active{background:#D4A843;color:#0a0804;font-weight:700;}
+.cond-desc{text-align:center;font-size:11px;color:#4a3d2e;margin-top:6px;}
+.btn-gold{width:100%;padding:16px;border:none;border-radius:10px;background:linear-gradient(135deg,#D4A843,#a8842a);color:#0a0804;font-size:15px;font-weight:700;letter-spacing:.2em;cursor:pointer;font-family:'Playfair Display',serif;margin-bottom:14px;}
+.btn-gold:disabled{background:#1a1408;color:#4a3d2e;cursor:not-allowed;}
+.status{text-align:center;font-size:13px;color:#D4A843;margin-bottom:10px;min-height:20px;}
+.status.error{color:#E07B6B;}
+.site-bar{margin-bottom:14px;}
+.site-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.site-name{font-size:13px;color:#c8b89a;}
+.site-badge{font-size:9px;padding:1px 6px;border-radius:10px;background:#D4A84222;color:#D4A843;margin-left:6px;}
+.site-price{font-size:20px;font-family:'Playfair Display',serif;font-weight:700;}
+.track{background:#0a0804;border-radius:3px;height:5px;}
+.fill{height:100%;width:78%;margin-left:11%;border-radius:3px;}
+.range{display:flex;justify-content:space-between;margin-top:2px;font-size:10px;color:#3a2d1e;}
+.hist-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#0a0804;border-radius:7px;margin-bottom:5px;}
+.tag{display:inline-block;padding:3px 10px;background:#0a0804;border:1px solid #251d10;border-radius:20px;font-size:11px;color:#8a7050;margin:3px;}
+.inp{width:100%;padding:10px 12px;background:#0a0804;border:1px solid #251d10;border-radius:8px;color:#e8d5a3;font-size:14px;font-family:inherit;margin-bottom:8px;}
+.lbl{font-size:11px;color:#6b5e4e;margin-bottom:4px;display:block;}
+details summary{cursor:pointer;font-size:12px;color:#6b5e4e;padding:8px 0;}
+</style>
+</head>
+<body>
+<div class="header"><h1>AUCTION TRACKER</h1><p>ブランド品 相場査定システム</p></div>
+<div class="main">
+<div class="card"><div class="sec">① 商品写真</div>
+<div class="dropzone" id="dropzone" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+<div id="di"><div style="font-size:44px;margin-bottom:10px">📸</div><div style="color:#D4A843;font-size:15px">タップして写真を選択</div><div style="color:#3a2d1e;font-size:11px;margin-top:4px">またはドラッグ＆ドロップ</div></div></div>
+<input type="file" id="fi" accept="image/*" style="display:none" onchange="handleFile(event)"></div>
+<div class="card"><div class="sec">② コンディション</div>
+<div class="cond-row">
+<button class="cond-btn" onclick="setCond('S',this)">S</button>
+<button class="cond-btn active" onclick="setCond('A',this)">A</button>
+<button class="cond-btn" onclick="setCond('B',this)">B</button>
+<button class="cond-btn" onclick="setCond('C',this)">C</button>
+<button class="cond-btn" onclick="setCond('D',this)">D</button>
+</div><div class="cond-desc" id="cd">良品・使用感少</div></div>
+<div class="card"><details><summary>⚙️ RKオークション ログイン設定（任意）</summary>
+<div style="margin-top:12px">
+<label class="lbl">ログインID</label><input class="inp" type="email" id="ri" placeholder="example@gmail.com">
+<label class="lbl">パスワード</label><input class="inp" type="password" id="rp" placeholder="パスワード">
+<div style="font-size:11px;color:#3a2d1e">入力するとRKの実落札データも取得します</div>
+</div></details></div>
+<button class="btn-gold" id="ab" onclick="appraise()" disabled>✦  AI 査定を開始  ✦</button>
+<div class="status" id="st"></div>
+<div id="result"></div>
+</div>
+<script>
+const CONDS={S:{d:'未使用・新品同様',m:1.15},A:{d:'良品・使用感少',m:1.00},B:{d:'普通・使用感あり',m:0.82},C:{d:'傷・汚れあり',m:0.65},D:{d:'難あり・要修理',m:0.45}};
+const SITES=[{id:'rk',n:'RKオークション',c:'#D4A843',r:1.05},{id:'eco',n:'エコリング',c:'#5CB87A',r:0.95},{id:'star',n:'スターバイヤーズ',c:'#6B9EE8',r:1.08},{id:'komehyo',n:'KOMEHYO',c:'#E07B6B',r:0.98}];
+const yen=n=>'¥'+Math.round(n).toLocaleString();
+let imgB64=null,cond='A';
+function setCond(c,btn){cond=c;document.querySelectorAll('.cond-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('cd').textContent=CONDS[c].d;}
+function handleDrop(e){e.preventDefault();handleFile({target:{files:e.dataTransfer.files}});}
+function handleFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=1024;let w=img.width,h=img.height;
+      if(w>MAX||h>MAX){if(w>=h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      const url=c.toDataURL('image/jpeg',0.82);
+      imgB64=url.split(',')[1];
+      const dz=document.getElementById('dropzone');
+      dz.innerHTML='<img src="'+url+'" onclick="document.getElementById(\'fi\').click()"><div style="text-align:center;margin-top:8px;font-size:11px;color:#6b5e4e;cursor:pointer" onclick="document.getElementById(\'fi\').click()">タップして変更</div>';
+      document.getElementById('ab').disabled=false;
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+async function appraise(){
+  if(!imgB64)return;
+  const btn=document.getElementById('ab'),st=document.getElementById('st');
+  btn.disabled=true;btn.textContent='査定中...';
+  st.className='status';st.textContent='⏳ AIが画像を分析中...';
+  document.getElementById('result').innerHTML='';
+  try{
+    const resp=await fetch('/api/appraise',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image_b64:imgB64,cond_label:cond+'（'+CONDS[cond].d+'）',rk_user:document.getElementById('ri').value,rk_pass:document.getElementById('rp').value})});
+    const data=await resp.json();
+    if(data.error)throw new Error(data.error);
+    renderResult(data.ai,data.rk);st.textContent='';
+  }catch(e){st.className='status error';st.textContent='エラー: '+e.message;}
+  finally{btn.disabled=false;btn.textContent='✦  AI 査定を開始  ✦';}
+}
+function renderResult(ai,rk){
+  const mult=CONDS[cond].m,base=ai.basePriceA*mult;
+  let h='<div class="card gold"><div style="text-align:center;padding-bottom:16px;border-bottom:1px solid #251d10;margin-bottom:16px">';
+  h+='<div style="font-size:26px;font-family:Playfair Display,serif;color:#e8d5a3">'+ai.brand+'</div>';
+  h+='<div style="font-size:14px;color:#9a8060;margin-bottom:16px">'+ai.model+'</div>';
+  if(rk)h+='<div style="background:#1a1a08;border:1px solid #D4A84444;border-radius:10px;padding:14px;margin-bottom:14px;text-align:center"><div style="font-size:10px;color:#6b5e4e;margin-bottom:8px">RK実落札データ（'+rk.count+'件）</div><div style="display:flex;justify-content:center;gap:24px"><div><div style="font-size:10px;color:#4a3d2e">平均</div><div style="font-size:24px;color:#D4A843;font-family:Georgia,serif">'+yen(rk.avg*mult)+'</div></div><div><div style="font-size:10px;color:#4a3d2e">安値</div><div style="font-size:16px;color:#5CB87A">'+yen(rk.min*mult)+'</div></div><div><div style="font-size:10px;color:#4a3d2e">高値</div><div style="font-size:16px;color:#E07B6B">'+yen(rk.max*mult)+'</div></div></div></div>';
+  h+='<div style="font-size:11px;color:#4a3d2e;margin-bottom:4px">AI推定相場 / コンディション '+cond+'</div>';
+  h+='<div style="font-size:44px;font-family:Georgia,serif;color:#D4A843;line-height:1">'+yen(base)+'</div>';
+  h+='<div style="font-size:11px;color:#4a3d2e;margin-top:6px">± 10% 程度の幅を想定</div></div>';
+  h+='<div style="font-size:10px;letter-spacing:.3em;color:#D4A843;text-transform:uppercase;margin-bottom:10px;font-weight:700">各オークション推定相場</div>';
+  SITES.forEach(s=>{const p=s.id==='rk'&&rk?rk.avg*mult:base*s.r;h+='<div class="site-bar"><div class="site-row"><span class="site-name">'+s.n+(s.id==='rk'&&rk?'<span class="site-badge">実データ</span>':'')+'</span><span class="site-price" style="color:'+s.c+'">'+yen(p)+'</span></div><div class="track"><div class="fill" style="background:linear-gradient(90deg,'+s.c+'22,'+s.c+','+s.c+'22)"></div></div><div class="range"><span>安値 '+yen(p*.88)+'</span><span>高値 '+yen(p*1.12)+'</span></div></div>';});
+  h+='<div style="font-size:10px;color:#2a1e10;text-align:center;margin-top:6px">'+(rk?'RK: 実落札データ / 他3社: AI推定':'※ すべてAI推定価格')+'</div></div>';
+  if(ai.history?.length){h+='<div class="card"><div class="sec">参考落札データ</div>';ai.history.forEach(item=>{const s=SITES.find(x=>x.id===item.site);h+='<div class="hist-row" style="border-left:3px solid '+(s?.c||'#D4A843')+'"><div><div style="font-size:12px;color:#c8b89a">'+(s?.n||'')+' · '+item.date+'</div><div style="font-size:10px;color:#3a2d1e">コンディション '+item.cond+'</div></div><div style="font-size:15px;font-family:Georgia,serif;color:#e8d5a3">'+yen(item.price)+'</div></div>';});h+='</div>';}
+  if(ai.features?.length){h+='<div class="card"><div class="sec">識別された特徴</div>'+ai.features.map(f=>'<span class="tag">'+f+'</span>').join('')+'</div>';}
+  if(ai.notes){h+='<div class="card"><div class="sec">査定コメント</div><div style="font-size:13px;color:#9a8060;line-height:1.8">'+ai.notes+'</div></div>';}
+  document.getElementById('result').innerHTML=h;
+}
+</script>
+</body>
+</html>
