@@ -1,11 +1,12 @@
 {
   "version": 2,
   "builds": [
-    { "src": "public/index.html", "use": "@vercel/static" },
+    { "src": "public/**", "use": "@vercel/static" },
     { "src": "api/appraise.js", "use": "@vercel/node" }
   ],
   "routes": [
     { "src": "/api/appraise", "dest": "/api/appraise.js" },
+    { "src": "/brand_mezzo_tool_zh.html", "dest": "/public/brand_mezzo_tool_zh.html" },
     { "src": "/(.*)", "dest": "/public/index.html" }
   ]
 }
