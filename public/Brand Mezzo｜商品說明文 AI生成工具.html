@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///Users/tomoh/Downloads/brand_mezzo_tool_zh.html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Mezzo｜商品說明文 AI生成工具</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./Brand Mezzo｜商品說明文 AI生成工具_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0e0c;
+  --surface: #1a1916;
+  --surface2: #232220;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-bg: rgba(201,168,76,0.08);
+  --text: #f0ece4;
+  --text-muted: #8a8680;
+  --text-dim: #555250;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.header {
+  border-bottom: 0.5px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  background: rgba(15,14,12,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  color: var(--gold); font-size: 16px; flex-shrink: 0;
+}
+.header-title { font-size: 15px; font-weight: 500; }
+.header-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.badge-ai {
+  margin-left: auto;
+  background: var(--gold-bg);
+  border: 0.5px solid rgba(201,168,76,0.3);
+  color: var(--gold-light);
+  font-size: 11px; padding: 4px 10px;
+  border-radius: 20px; font-weight: 500;
+}
+.container { max-width: 600px; margin: 0 auto; padding: 24px 16px 60px; }
+.tab-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 20px; }
+.tab {
+  padding: 10px 8px; font-size: 13px; font-weight: 500;
+  font-family: 'Noto Sans TC', sans-serif;
+  border: 0.5px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; background: var(--surface); color: var(--text-muted);
+  transition: all 0.15s; text-align: center;
+}
+.tab.active { border-color: rgba(201,168,76,0.4); background: var(--gold-bg); color: var(--gold-light); }
+.card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 14px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 14px; }
+.field { margin-bottom: 12px; }
+.field:last-child { margin-bottom: 0; }
+label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 5px; }
+input[type=text], select, textarea {
+  width: 100%;
+  background: var(--surface2); border: 0.5px solid var(--border2);
+  border-radius: var(--radius); color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif; font-size: 14px;
+  padding: 10px 12px; outline: none; transition: border-color 0.15s;
+  appearance: none; -webkit-appearance: none;
+}
+input[type=text]:focus, select:focus, textarea:focus { border-color: rgba(201,168,76,0.5); }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+}
+textarea { resize: vertical; min-height: 68px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.checkbox-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.checkbox-item {
+  display: flex; align-items: center; gap: 5px; cursor: pointer;
+  background: var(--surface2); border: 0.5px solid var(--border2);
+  border-radius: 6px; padding: 5px 10px; font-size: 12px;
+  color: var(--text-muted); transition: all 0.15s; user-select: none;
+}
+.checkbox-item.checked { border-color: rgba(201,168,76,0.4); background: var(--gold-bg); color: var(--gold-light); }
+.checkbox-item input { display: none; }
+.generate-btn {
+  width: 100%; padding: 15px; font-size: 15px; font-weight: 700;
+  font-family: 'Noto Sans TC', sans-serif;
+  border: none; border-radius: var(--radius);
+  background: var(--gold); color: #0f0e0c;
+  cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em; margin-bottom: 14px;
+}
+.generate-btn:hover { background: var(--gold-light); }
+.generate-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.status { text-align: center; font-size: 13px; color: var(--text-muted); padding: 12px; display: none; }
+.dot-flash { display: inline-block; animation: flash 1.2s infinite; }
+@keyframes flash { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.result-card { background: var(--surface); border: 0.5px solid rgba(201,168,76,0.25); border-radius: var(--radius-lg); padding: 18px; display: none; }
+.result-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.result-text { font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.action-row { display: flex; gap: 8px; margin-top: 14px; }
+.action-btn {
+  flex: 1; padding: 10px; font-size: 13px; font-weight: 500;
+  font-family: 'Noto Sans TC', sans-serif;
+  border: 0.5px solid var(--border2); border-radius: var(--radius);
+  background: var(--surface2); color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+}
+.action-btn:hover { color: var(--text); }
+.action-btn.gold { background: var(--gold-bg); border-color: rgba(201,168,76,0.3); color: var(--gold-light); }
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-mark">BM</div>
+  <div>
+    <div class="header-title">Brand Mezzo</div>
+    <div class="header-sub">商品說明文 AI生成工具</div>
+  </div>
+  <div class="badge-ai">✦ AI Powered</div>
+</div>
+
+<div class="container">
+
+  <div class="tab-row">
+    <button class="tab active" onclick="setCategory(&#39;bag&#39;)" id="tab-bag">👜 包包</button>
+    <button class="tab" onclick="setCategory(&#39;watch&#39;)" id="tab-watch">⌚ 手錶</button>
+    <button class="tab" onclick="setCategory(&#39;jewelry&#39;)" id="tab-jewelry">💎 珠寶</button>
+  </div>
+
+  <div class="card">
+    <div class="section-label">基本資訊</div>
+    <div class="grid2">
+      <div class="field">
+        <label>品牌</label>
+        <input type="text" id="brand" placeholder="例）Hermès, Louis Vuitton">
+      </div>
+      <div class="field">
+        <label>品名・型號</label>
+        <input type="text" id="model" placeholder="例）Birkin 30, Neverfull MM">
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label>顏色</label>
+        <input type="text" id="color" placeholder="例）Étoupe">
+      </div>
+      <div class="field">
+        <label>材質</label>
+        <input type="text" id="material" placeholder="例）Togo皮">
+      </div>
+      <div class="field">
+        <label>品相等級</label>
+        <select id="rank">
+          <option value="">請選擇</option>
+          <option value="未使用品">全新未使用</option>
+          <option value="未使用に近い">近全新</option>
+          <option value="極美品">極美品</option>
+          <option value="美品">美品</option>
+          <option value="良品">良品</option>
+          <option value="使用感あり">有使用感</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAG -->
+  <div class="card" id="bag-fields">
+    <div class="section-label">狀態・詳細</div>
+    <div class="field">
+      <label>瑕疵・污漬・使用感詳細</label>
+      <textarea id="damage" placeholder="例）右側底角有約5mm磨痕，內裡有些微污漬"></textarea>
+    </div>
+    <div class="field">
+      <label>尺寸（選填）</label>
+      <input type="text" id="size" placeholder="例）30cm × 22cm × 15cm">
+    </div>
+    <div class="field">
+      <label>附件</label>
+      <div class="checkbox-row" id="acc-bag">
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="防塵袋">防塵袋</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="提袋">提袋</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="盒子">盒子</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="掛鎖">掛鎖</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="鑰匙">鑰匙</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Clochette">Clochette</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="防雨罩">防雨罩</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="保證書">保證書</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>刻印・其他備註（選填）</label>
+      <input type="text" id="stamp" placeholder="例）□R刻印，2018年製">
+    </div>
+  </div>
+
+  <!-- WATCH -->
+  <div class="card" id="watch-fields" style="display:none">
+    <div class="section-label">狀態・詳細</div>
+    <div class="field">
+      <label>瑕疵・狀態詳細</label>
+      <textarea id="w-damage" placeholder="例）錶殼側邊有細微磨痕，錶鏡完好無刮傷"></textarea>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>型號參考編號（選填）</label>
+        <input type="text" id="w-ref" placeholder="例）126610LN">
+      </div>
+      <div class="field">
+        <label>製造年份（選填）</label>
+        <input type="text" id="w-year" placeholder="例）2020年製">
+      </div>
+    </div>
+    <div class="field">
+      <label>走動確認</label>
+      <select id="w-move">
+        <option value="">請選擇</option>
+        <option value="正常稼働中">正常走動中</option>
+        <option value="不動">不走動</option>
+        <option value="確認済み（日差±5秒以内）">已確認（日差±5秒以內）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>錶帶狀態（選填）</label>
+      <input type="text" id="w-belt" placeholder="例）原廠錶帶，附2個備用錶節，無變形">
+    </div>
+    <div class="field">
+      <label>附件</label>
+      <div class="checkbox-row" id="acc-watch">
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="盒子">盒子</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="保證書卡">保證書卡</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="備用錶節">備用錶節</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="保養證明">保養證明</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="標籤">標籤</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="說明書">說明書</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEWELRY -->
+  <div class="card" id="jewelry-fields" style="display:none">
+    <div class="section-label">狀態・詳細</div>
+    <div class="field">
+      <label>狀態詳細</label>
+      <textarea id="j-damage" placeholder="例）無掉石、無變色、刻印清晰"></textarea>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label>材質・純度</label>
+        <input type="text" id="j-purity" placeholder="例）K18YG, Pt950">
+      </div>
+      <div class="field">
+        <label>重量（選填）</label>
+        <input type="text" id="j-weight" placeholder="例）12.3g">
+      </div>
+      <div class="field">
+        <label>寶石（選填）</label>
+        <input type="text" id="j-stone" placeholder="例）鑽石0.3ct">
+      </div>
+    </div>
+    <div class="field">
+      <label>附件</label>
+      <div class="checkbox-row" id="acc-jewelry">
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="盒子">盒子</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="防塵袋">防塵袋</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="GIA鑑定書">GIA鑑定書</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="簡易鑑定書">簡易鑑定書</label>
+        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="保證書">保證書</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">刊登平台</div>
+    <div class="field" style="margin-bottom:0">
+      <select id="platform">
+        <option value="shopline">Shopline</option>
+        <option value="ec">蝦皮 / Yahoo / 拍拍</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="generate-btn" onclick="generate()" id="gen-btn">生成商品說明文</button>
+
+  <div class="status" id="status">
+    <span class="dot-flash">●</span> AI 生成中，請稍候...
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-label">✦ 生成的商品說明文</div>
+    <div class="result-text" id="result-text"></div>
+    <div class="action-row">
+      <button class="action-btn gold" onclick="copyText()" id="copy-btn">複製</button>
+      <button class="action-btn" onclick="resetForm()">重置</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentCategory = 'bag';
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.querySelector('input').checked = el.classList.contains('checked');
+}
+
+function setCategory(c) {
+  currentCategory = c;
+  ['bag','watch','jewelry'].forEach(x => {
+    document.getElementById('tab-'+x).classList.toggle('active', x===c);
+    document.getElementById(x+'-fields').style.display = x===c ? '' : 'none';
+  });
+}
+
+function getChecked(id) {
+  return Array.from(document.querySelectorAll('#'+id+' input:checked')).map(b=>b.value);
+}
+
+function buildPrompt() {
+  const brand = document.getElementById('brand').value;
+  const model = document.getElementById('model').value;
+  const color = document.getElementById('color').value;
+  const material = document.getElementById('material').value;
+  const rank = document.getElementById('rank').value;
+  const platform = document.getElementById('platform').value;
+
+  let details = '';
+  if (currentCategory === 'bag') {
+    const acc = getChecked('acc-bag');
+    details = `類別: 包包\n品牌: ${brand}\n品名・型號: ${model}\n顏色: ${color}\n材質: ${material}\n品相: ${rank}\n瑕疵・污漬: ${document.getElementById('damage').value||'無'}\n尺寸: ${document.getElementById('size').value||'未填寫'}\n附件: ${acc.length?acc.join('、'):'無'}\n刻印・備註: ${document.getElementById('stamp').value||'無'}`;
+  } else if (currentCategory === 'watch') {
+    const acc = getChecked('acc-watch');
+    details = `類別: 手錶\n品牌: ${brand}\n品名・型號: ${model} ${document.getElementById('w-ref').value}\n顏色: ${color}\n材質: ${material}\n品相: ${rank}\n狀態詳細: ${document.getElementById('w-damage').value||'無'}\n製造年份: ${document.getElementById('w-year').value||'不明'}\n錶帶: ${document.getElementById('w-belt').value||'不明'}\n走動: ${document.getElementById('w-move').value||'未確認'}\n附件: ${acc.length?acc.join('、'):'無'}`;
+  } else {
+    const acc = getChecked('acc-jewelry');
+    details = `類別: 珠寶\n品牌: ${brand}\n品名: ${model}\n材質・純度: ${document.getElementById('j-purity').value||material}\n顏色: ${color}\n重量: ${document.getElementById('j-weight').value||'不明'}\n寶石: ${document.getElementById('j-stone').value||'無'}\n品相: ${rank}\n狀態詳細: ${document.getElementById('j-damage').value||'無'}\n附件: ${acc.length?acc.join('、'):'無'}`;
+  }
+
+  const platNote = platform==='shopline'
+    ? '刊登平台為Shopline，請撰寫較詳細、正式的說明文。'
+    : '刊登平台為蝦皮/Yahoo/拍拍，請撰寫簡潔易讀的說明文。';
+
+  return `你是二手精品銷售專家。請用繁體中文撰寫商品說明文。${platNote}\n\n請根據以下商品資訊，撰寫讓客人安心購買的具體清楚說明文。請誠實且有吸引力地描述狀態，列出所有附件，並消除猶豫中客人的疑慮。只需輸出說明文本身，不需要前言或解說。\n\n商品資訊:\n${details}`;
+}
+
+async function generate() {
+  const brand = document.getElementById('brand').value.trim();
+  if (!brand) { alert('請輸入品牌名稱'); return; }
+
+  const btn = document.getElementById('gen-btn');
+  const status = document.getElementById('status');
+  const card = document.getElementById('result-card');
+  btn.disabled = true;
+  status.style.display = 'block';
+  card.style.display = 'none';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: buildPrompt() }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || '';
+    document.getElementById('result-text').textContent = text;
+    card.style.display = 'block';
+    status.style.display = 'none';
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    status.textContent = '發生錯誤，請再試一次。';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function copyText() {
+  const text = document.getElementById('result-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '已複製！';
+    setTimeout(()=>{ btn.textContent = '複製'; }, 2000);
+  });
+}
+
+function resetForm() {
+  ['brand','model','color','material','size','stamp','damage','w-damage','w-ref','w-year','w-belt','j-weight','j-purity','j-stone','j-damage'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  ['rank','w-move','platform'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('.checkbox-item').forEach(el=>{ el.classList.remove('checked'); el.querySelector('input').checked=false; });
+  document.getElementById('result-card').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+
+</body></html>
